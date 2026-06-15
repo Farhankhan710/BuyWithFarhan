@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Admin Dashboard - BuyWithFarhan</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; color: #0a192f; padding: 20px; text-align: center; margin: 0; }
+        .box { background: white; max-width: 550px; margin: 30px auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        input, select, textarea { width: 100%; padding: 11px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background: #fafafa; }
+        label { display: block; text-align: left; font-weight: bold; font-size: 13px; margin-top: 12px; color: #475569; }
+        button { background: #0a192f; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; margin-top: 10px; transition: 0.2s; }
+        button:hover { background: #172a45; }
+        #adminPanel { display: none; }
+        
+        /* LIVE PRODUCTS MANAGEMENT LIST */
+        .manage-container { max-width: 800px; margin: 40px auto; text-align: left; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .product-list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #f1f5f9; gap: 15px; }
+        .product-list-item:last-child { border-bottom: none; }
+        .prod-img-preview { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .prod-details { flex-grow: 1; }
+        .prod-details h4 { margin: 0 0 4px 0; font-size: 14px; color: #0a192f; }
+        .prod-details p { margin: 0; font-size: 12px; color: #64748b; }
+        .action-btns { display: flex; gap: 8px; }
+        .edit-btn { background: #0284c7; color: white; padding: 8px 14px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; margin: 0; width: auto; font-weight: bold; }
+        .edit-btn:hover { background: #0369a1; }
+        .delete-btn { background: #ef4444; color: white; padding: 8px 14px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; margin: 0; width: auto; font-weight: bold; }
+        .delete-btn:hover { background: #dc2626; }
+        .badge { display: inline-block; padding: 2px 6px; background: #e2e8f0; color: #475569; font-size: 10px; font-weight: bold; border-radius: 4px; text-transform: uppercase; margin-right: 4px; }
+
+        /* UNIQUE STYLE NOTIFICATION MESSAGES */
+        .custom-toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(8px);
+            color: #ffffff; padding: 15px 30px; border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 10000;
+            display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px;
+            border: 1px solid rgba(255,255,255,0.1); pointer-events: none; opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-toast.show { top: 30px; opacity: 1; }
+        .toast-icon { font-size: 20px; background: rgba(34, 197, 94, 0.2); padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <div id="toastNotification" class="custom-toast">
+        <div class="toast-icon" id="toastIcon">🚀</div>
+        <span id="toastMessage">Product Added Successfully!</span>
+    </div>
+
+    <div id="loginBox" class="box">
+        <h2 style="margin-top:0; color: #0a192f;">🔒 Farhan Admin Access</h2>
+        <p style="font-size: 13px; color: #64748b; margin-top: -5px;">Enter your master access security pin</p>
+        <input type="password" id="adminPin" placeholder="Enter Admin Secret PIN" style="text-align: center; font-size: 18px; letter-spacing: 5px;" required>
+        <button onclick="loginWithPin()">Access Dashboard</button>
+    </div>
+
+    <div id="adminPanel">
+        <div class="box">
+            <h2 id="formTitle" style="margin-top:0; color: #00b4d8;">👑 Add New Product</h2>
+            <p style="color: #22c55e; font-weight: bold; margin-bottom: 20px; font-size: 13px;">Active Admin Session: Farhan 👑</p>
+            
+            <input type="hidden" id="editProductId" value="">
+
+            <label>Select Main Page Section:</label>
+            <select id="prodPage" onchange="updateCategoryOptions()">
+                <option value="men">Men's Wear Collection</option>
+                <option value="women">Women's Wear Collection</option>
+                <option value="kids">Kids' Wear & Toys Collection</option>
+                <option value="electronics">Electronics</option>
+                <option value="accessories">Premium Accessories</option>
+                <option value="decor">Home & Living Decor</option>
+                <option value="footwear">Trendy Footwear Hub</option>
+            </select>
+            
+            <label>Product Title / Name:</label>
+            <input type="text" id="prodName" placeholder="e.g., Stylish T-Shirt" required>
+
+            <label>Short Description:</label>
+            <input type="text" id="prodDesc" placeholder="e.g., Men's Cotton Wear" required>
+            
+            <label>Price (with symbol):</label>
+            <input type="text" id="prodPrice" placeholder="e.g., ₹341" required>
+            
+            <label>Image Link (URL):</label>
+            <textarea id="prodImg" rows="3" placeholder="Paste product image URL here..." required></textarea>
+            
+            <label>Category Filter:</label>
+            <select id="prodCat"></select>
+
+            <button id="submitActionBtn" onclick="uploadProduct()">🚀 Publish Product Live</button>
+            <button id="cancelEditBtn" onclick="resetForm()" style="background: #64748b; display: none;">Cancel Edit Mode</button>
+            <button onclick="logoutAdmin()" style="background: #ef4444; margin-top: 25px;">Logout Dashboard</button>
+        </div>
+
+        <div class="manage-container">
+            <h3 style="margin-top: 0; color: #0a192f; border-bottom: 2px dashed #cbd5e1; padding-bottom: 10px;">📋 Manage Existing Products</h3>
+            <div id="liveProductsList">
+                <p style="color: #64748b; font-size: 14px;">Loading active inventory products...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB70CUmZ0pBMJxuESbTIPmUEjLyEfXkLKQ",
+            authDomain: "bywithfarhan.firebaseapp.com",
+            projectId: "bywithfarhan",
+            storageBucket: "bywithfarhan.firebasestorage.app",
+            messagingSenderId: "73400600521",
+            appId: "1:73400600521:web:cec78a693ec128d3270a18"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        const MASTER_SECRET_PIN = "884966"; 
+
+        const categoryMapping = {
+            men: [
+                { value: "all", label: "All Men's Wear" },
+                { value: "shirt", label: "Shirts / T-Shirts" },
+                { value: "jeans", label: "Jeans / Bottoms" },
+                { value: "kurta", label: "Kurta / Ethnic" }
+            ],
+            women: [
+                { value: "all", label: "All Women's Wear" },
+                { value: "kurta", label: "Kurtas & Sets" },
+                { value: "top", label: "Tops & Tunics" }
+            ],
+            kids: [
+                { value: "all", label: "All Kids Items" },
+                { value: "boys", label: "Boys Clothing" },
+                { value: "girls", label: "Girls Clothing" },
+                { value: "toys", label: "Toys & Games" }
+            ],
+            electronics: [
+                { value: "all", label: "All Electronics" },
+                { value: "earbuds", label: "Earbuds / Audio" },
+                { value: "smartwatch", label: "Smartwatches" }
+            ],
+            accessories: [
+                { value: "all", label: "All Accessories" },
+                { value: "watch", label: "Luxury Watches" }
+            ],
+            decor: [
+                { value: "all", label: "All Decor Items" },
+                { value: "incense", label: "Incense Holders" },
+                { value: "lamps", label: "Night Lamps" }
+            ],
+            footwear: [
+                { value: "all", label: "All Footwear Hub" },
+                { value: "sports", label: "Sports Shoes" },
+                { value: "sneakers", label: "Casual Sneakers" },
+                { value: "slippers", label: "Slippers & Slides" }
+            ]
+        };
+
+        function updateCategoryOptions() {
+            const pageSelect = document.getElementById('prodPage').value;
+            const catSelect = document.getElementById('prodCat');
+            catSelect.innerHTML = "";
+            if(categoryMapping[pageSelect]) {
+                categoryMapping[pageSelect].forEach(opt => {
+                    let element = document.createElement('option');
+                    element.value = opt.value;
+                    element.text = opt.label;
+                    catSelect.appendChild(element);
+                });
+            }
+        }
+
+        // Custom Unique Notification Handler
+        function launchToast(message, icon = "🚀", isError = false) {
+            const toast = document.getElementById("toastNotification");
+            document.getElementById("toastMessage").innerText = message;
+            const iconBox = document.getElementById("toastIcon");
+            iconBox.innerText = icon;
+            
+            if(isError) {
+                iconBox.style.background = "rgba(239, 68, 68, 0.2)";
+            } else {
+                iconBox.style.background = "rgba(34, 197, 94, 0.2)";
+            }
+            
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 4000);
+        }
+
+        if(sessionStorage.getItem("admin_verified") === "true") {
+            showDashboard();
+        }
+
+        function loginWithPin() {
+            const enteredPin = document.getElementById('adminPin').value.trim();
+            if(enteredPin === MASTER_SECRET_PIN) {
+                sessionStorage.setItem("admin_verified", "true");
+                showDashboard();
+                setTimeout(() => launchToast("Welcome back, Farhan!", "👑"), 400);
+            } else {
+                launchToast("Incorrect Access PIN!", "❌", true);
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            updateCategoryOptions();
+            listenToLiveInventory();
+        }
+
+        function logoutAdmin() { 
+            sessionStorage.removeItem("admin_verified");
+            document.getElementById('loginBox').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPin').value = '';
+            resetForm();
+        }
+
+        function uploadProduct() {
+            const editId = document.getElementById('editProductId').value;
+            const page = document.getElementById('prodPage').value;
+            const name = document.getElementById('prodName').value.trim();
+            const desc = document.getElementById('prodDesc').value.trim();
+            let price = document.getElementById('prodPrice').value.trim();
+            const img = document.getElementById('prodImg').value.trim();
+            const cat = document.getElementById('prodCat').value;
+
+            if(!name || !desc || !price || !img) { launchToast("Please fill all fields!", "⚠️", true); return; }
+            if(!price.includes('₹')) { price = '₹' + price; }
+
+            const productPayload = {
+                page: page,
+                name: name,
+                desc: desc,
+                price: price,
+                img: img,
+                category: cat,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            if(editId === "") {
+                // ADD NEW PRODUCT
+                db.collection("products").add(productPayload).then(() => {
+                    launchToast("Boom! Product Published Live!", "🔥");
+                    resetForm();
+                }).catch(err => launchToast(err.message, "❌", true));
+            } else {
+                // UPDATE EXISTING PRODUCT (FIXED)
+                db.collection("products").doc(editId).set(productPayload, { merge: true }).then(() => {
+                    launchToast("Product Specs Updated Successfully!", "🔄");
+                    resetForm();
+                }).catch(err => launchToast(err.message, "❌", true));
+            }
+        }
+
+        function listenToLiveInventory() {
+            db.collection("products").onSnapshot(snapshot => {
+                const container = document.getElementById('liveProductsList');
+                if(snapshot.empty) {
+                    container.innerHTML = `<p style="color:#64748b; font-size:14px;">No products found in the database.</p>`;
+                    return;
+                }
+                
+                container.innerHTML = "";
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    
+                    // Safe string escaping for JS injection inside button arguments
+                    const nameEscaped = btoa(unescape(encodeURIComponent(data.name)));
+                    const descEscaped = btoa(unescape(encodeURIComponent(data.desc || "")));
+                    const imgEscaped = btoa(unescape(encodeURIComponent(data.img)));
+                    const priceEscaped = btoa(unescape(encodeURIComponent(data.price)));
+
+                    const itemHtml = `
+                        <div class="product-list-item">
+                            <img src="${data.img}" class="prod-img-preview" onerror="this.src='https://placehold.co/50'">
+                            <div class="prod-details">
+                                <h4>${data.name}</h4>
+                                <p><span class="badge">${data.page}</span> <span class="badge" style="background:#fef08a; color:#a16207;">${data.category}</span> <b>${data.price}</b></p>
+                            </div>
+                            <div class="action-btns">
+                                <button class="edit-btn" onclick="triggerEditMode('${id}', '${nameEscaped}', '${descEscaped}', '${priceEscaped}', '${imgEscaped}', '${data.page}', '${data.category}')">Edit</button>
+                                <button class="delete-btn" onclick="deleteProduct('${id}')">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', itemHtml);
+                });
+            }, err => {
+                console.log("Snapshot error: ", err.message);
+            });
+        }
+
+        // Trigger edit mode securely using Base64 to bypass quote breaks
+        function triggerEditMode(id, nameB64, descB64, priceB64, imgB64, page, category) {
+            const name = decodeURIComponent(escape(atob(nameB64)));
+            const desc = decodeURIComponent(escape(atob(descB64)));
+            const price = decodeURIComponent(escape(atob(priceB64)));
+            const img = decodeURIComponent(escape(atob(imgB64)));
+
+            document.getElementById('editProductId').value = id;
+            document.getElementById('prodPage').value = page;
+            updateCategoryOptions();
+            
+            document.getElementById('prodName').value = name;
+            document.getElementById('prodDesc').value = desc;
+            document.getElementById('prodPrice').value = price;
+            document.getElementById('prodImg').value = img;
+            document.getElementById('prodCat').value = category;
+
+            document.getElementById('formTitle').innerText = "🔄 Edit Product Mode";
+            document.getElementById('formTitle').style.color = "#0284c7";
+            document.getElementById('submitActionBtn').innerText = "Update Product Specifications";
+            document.getElementById('cancelEditBtn').style.display = "block";
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function deleteProduct(id) {
+            if(confirm("Are you sure you want to delete this product from live website?")) {
+                db.collection("products").doc(id).delete().then(() => {
+                    launchToast("Product Successfully Deleted!", "🗑️");
+                }).catch(err => launchToast(err.message, "❌", true));
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('editProductId').value = "";
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodImg').value = '';
+            document.getElementById('prodPage').selectedIndex = 0;
+            updateCategoryOptions();
+
+            document.getElementById('formTitle').innerText = "👑 Add New Product";
+            document.getElementById('formTitle').style.color = "#00b4d8";
+            document.getElementById('submitActionBtn').innerText = "🚀 Publish Product Live";
+            document.getElementById('cancelEditBtn').style.display = "none";
+        }
+    </script>
+</body>
+</html>

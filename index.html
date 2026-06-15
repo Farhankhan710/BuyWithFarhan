@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyWithFarhan - Dropshipping Store</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8fafc; 
+            color: #0a192f;
+        }
+
+        /* PREMIUM BANNER STYLING */
+        .premium-header-banner {
+            background-color: #0a192f;
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .animated-brand-logo {
+            display: inline-block;
+        }
+        
+        .animated-brand-logo h1 {
+            margin: 0; 
+            font-size: 32px; 
+            font-weight: 900; 
+            letter-spacing: -0.5px; 
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        /* GOOGLE STYLE SEARCH BAR */
+        .amazon-search-wrapper {
+            max-width: 580px;
+            margin: 25px auto 0 auto;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .amazon-search-container {
+            display: flex;
+            align-items: center;
+            background: #ffffff; 
+            border: 1px solid #dfe1e5;
+            border-radius: 24px; 
+            padding: 0 16px;
+            height: 46px;
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+            transition: all 0.2s ease;
+        }
+
+        .amazon-search-container:hover, 
+        .amazon-search-container:focus-within {
+            box-shadow: 0 4px 12px rgba(32,33,36,0.30);
+            border-color: rgba(223,225,229,0);
+        }
+
+        .google-search-icon-left {
+            color: #9aa0a6;
+            font-size: 16px;
+            margin-right: 12px;
+            user-select: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .amazon-search-container input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #202124;
+            background: transparent;
+            width: 100%;
+            padding: 0;
+        }
+
+        .amazon-search-container input::placeholder {
+            color: #9aa0a6;
+        }
+
+        /* GOOGLE LENS CAMERA BUTTON STYLE */
+        .camera-search-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease;
+            margin-left: 8px;
+        }
+        
+        .camera-search-btn:active {
+            transform: scale(0.9);
+        }
+
+        .camera-search-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* LIVE SUGGESTIONS DROPDOWN */
+        .amazon-suggestion-box {
+            position: absolute;
+            top: 100%;
+            left: 10px;
+            right: 10px;
+            background: #ffffff;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 12px rgba(32,33,36,0.30);
+            max-height: 260px;
+            overflow-y: auto;
+            display: none;
+            z-index: 99999;
+            margin-top: 0px;
+            text-align: left;
+            border: 1px solid #dfe1e5;
+            border-top: none;
+        }
+
+        .suggestion-item {
+            padding: 10px 18px;
+            font-size: 15px;
+            color: #202124;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f1f3f4;
+        }
+
+        /* GOOGLE LENS SCANNING OVERLAY VIEW */
+        .lens-scanning-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .lens-box {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            background: #0f172a;
+        }
+
+        .lens-corner {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 4px solid #4285F4;
+        }
+        .tl { top: 10px; left: 10px; border-right: none; border-bottom: none; border-top-left-radius: 8px;}
+        .tr { top: 10px; right: 10px; border-left: none; border-bottom: none; border-top-right-radius: 8px; border-color: #EA4335;}
+        .bl { bottom: 10px; left: 10px; border-right: none; border-top: none; border-bottom-left-radius: 8px; border-color: #FBBC05;}
+        .br { bottom: 10px; right: 10px; border-left: none; border-top: none; border-bottom-right-radius: 8px; border-color: #34A853;}
+
+        .lens-laser-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(to right, transparent, #4285F4, #EA4335, #FBBC05, #34A853, transparent);
+            animation: scanAnimation 2s linear infinite;
+        }
+
+        @keyframes scanAnimation {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        /* NAVIGATION BAR */
+        .top-navbar {
+            background-color: #172a45; 
+            padding: 12px 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start;
+            border-bottom: 3px solid #00b4d8;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            gap: 15px;
+        }
+
+        .hamburger-btn {
+            font-size: 22px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .nav-scroll-links {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 10px;
+            flex-grow: 1;
+            scroll-behavior: smooth;
+        }
+
+        .nav-scroll-links::-webkit-scrollbar {
+            display: none; 
+        }
+
+        .menu-nav-link {
+            text-decoration: none; 
+            color: #ffffff; 
+            font-weight: bold; 
+            font-size: 13px; 
+            padding: 8px 16px; 
+            background: #0a192f; 
+            border-radius: 20px; 
+            border: 1px solid #233554;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        
+        .menu-nav-link:hover {
+            background-color: #00b4d8; 
+            border-color: #00b4d8;
+            color: #ffffff;
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-content-area {
+            padding: 20px; 
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        /* SIDEBAR PANEL */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: #ffffff;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.2);
+            z-index: 9999;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            text-align: right;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .welcome-panel {
+            padding: 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .welcome-panel h4 { margin: 0; font-size: 16px; color: #0a192f; }
+        .welcome-panel p { margin: 5px 0 0 0; font-size: 12px; color: #64748b; word-break: break-all; }
+
+        .sidebar-links {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            display: block;
+            padding: 12px 10px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: 0.2s;
+        }
+        .sidebar-item:hover {
+            background: #f1f5f9;
+            padding-left: 15px;
+            color: #00b4d8;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .google-login-btn {
+            width: 100%;
+            padding: 11px;
+            background: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout-action-btn {
+            width: 100%;
+            padding: 11px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+        }
+
+        .admin-portal-btn {
+            display: none; 
+            text-align: center;
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+            background: #22c55e;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+        }
+
+        .section-block {
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 2px dashed #e2e8f0; 
+            text-align: left;
+            scroll-margin-top: 70px; 
+        }
+
+        .product-slider {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 15px;
+            padding: 10px 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .product-slider::-webkit-scrollbar {
+            height: 6px;
+        }
+        .product-slider::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .product-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: 200px;
+            padding: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+            flex: 0 0 auto;
+            background: white;
+            display: inline-block;
+            vertical-align: top;
+            transition: transform 0.2s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .product-card.hidden {
+            display: none !important;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .product-title {
+            margin: 8px 0 4px 0;
+            font-size: 15px;
+            color: #0a192f;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-desc {
+            color: #64748b;
+            font-size: 12px;
+            margin: 0 0 8px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0a192f;
+            margin-bottom: 10px;
+        }
+
+        .buy-now-btn {
+            background-color: #0a192f;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .see-all-flex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            padding: 0 20px;
+        }
+
+        .see-all-circle-new {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background-color: #0a192f; 
+            color: white !important;
+            text-decoration: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* POPUP MODAL STYLING */
+        .order-popup {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 25, 47, 0.6); 
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .popup-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .submit-order-btn {
+            background-color: #0a192f; 
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* PREMIUM FOOTER STYLING */
+        .premium-store-footer {
+            background-color: #0a192f;
+            color: #ffffff;
+            padding: 40px 20px 20px 20px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            border-top: 3px solid #00b4d8;
+            margin-top: 50px;
+        }
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .footer-thankyou h3 {
+            font-size: 22px;
+            color: #00b4d8;
+            margin: 0 0 10px 0;
+            font-family: 'Arial Black', sans-serif;
+        }
+        .footer-thankyou p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 25px 0;
+        }
+        
+        .footer-social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .social-icon-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .social-icon-link svg {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+        .social-icon-link:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+        .social-icon-link:hover svg {
+            transform: scale(1.1);
+        }
+        .footer-copyright {
+            font-size: 12px;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lensOverlay" class="lens-scanning-overlay">
+        <div class="lens-box">
+            <div class="lens-corner tl"></div>
+            <div class="lens-corner tr"></div>
+            <div class="lens-corner bl"></div>
+            <div class="lens-corner br"></div>
+            <div class="lens-laser-line"></div>
+            <div style="position: absolute; width:100%; text-align:center; bottom:25px; font-weight:bold; font-size:12px; letter-spacing:1px; color:#cbd5e1;">GOOGLE LENS ACTIVE</div>
+        </div>
+        <h3 style="margin-top:20px;">Analyzing Product Image Features...</h3>
+        <p style="color:#94a3b8; font-size:14px;">Matching objects with store collection data</p>
+    </div>
+
+    <header class="premium-header-banner">
+        <div class="animated-brand-logo">
+            <h1>
+                <span style="color: #ffffff;">BuyWith</span><span style="color: #00b4d8;">Farhan</span>
+            </h1>
+            <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: bold;">Premium Dropshipping Store</p>
+        </div>
+
+        <div class="amazon-search-wrapper">
+            <div class="amazon-search-container">
+                <div class="google-search-icon-left" onclick="triggerSearchButton()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9aa0a6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="text" id="storeSearchInput" placeholder="Search Google or type URL..." oninput="handleSearchSuggestions()" onfocus="handleSearchSuggestions()" onkeypress="if(event.key === 'Enter') triggerSearchButton()">
+                
+                <label for="cameraFileInput" class="camera-search-btn" title="Search by image (Google Lens)">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+                        <path fill="#EA4335" d="M19.3,16.9C18.4,18.6 16.7,19.7 14.8,19.9H14.7C14.1,20 13.1,20 12,20C7.3,20 3.5,16.2 3.5,11.5C3.5,6.8 7.3,3 12,3C14.3,3 16.4,3.9 18,5.5L15.8,7.7C14.8,6.7 13.5,6.2 12,6.2C9.1,6.2 6.7,8.6 6.7,11.5C6.7,14.4 9.1,16.8 12,16.8C13.2,16.8 14.2,16.4 15,15.7L19.3,16.9Z" />
+                        <path fill="#FBBC05" d="M21,11.5C21,12.5 20.8,13.5 20.5,14.4L18,13.7C18.2,13 18.3,12.3 18.3,11.5C18.3,10.1 17.7,8.8 16.8,7.9L19,5.7C20.3,7.2 21,9.3 21,11.5Z" />
+                        <path fill="#34A853" d="M20,4.5V7.5H17V4.5H20M21.5,3H15.5V9H21.5V3Z" />
+                    </svg>
+                </label>
+                <input type="file" id="cameraFileInput" accept="image/*" style="display: none;" onchange="handleCameraSearch(event)">
+            </div>
+            <div id="suggestionBox" class="amazon-suggestion-box"></div>
+        </div>
+    </header>
+
+    <nav class="top-navbar">
+        <div class="hamburger-btn" onclick="toggleSidebar()">☰ <span style="font-size: 15px;">Menu</span></div>
+        <div class="nav-scroll-links">
+            <a href="#men" class="menu-nav-link">Men's Wear</a>
+            <a href="#women" class="menu-nav-link">Women's Wear</a>
+            <a href="#kids" class="menu-nav-link">Kids' Wear</a> <a href="#electronics" class="menu-nav-link">Electronics</a>
+            <a href="#accessories" class="menu-nav-link">Accessories</a>
+            <a href="#decor" class="menu-nav-link">Home Decor</a>
+            <a href="#footwear" class="menu-nav-link">Footwear</a>
+        </div>
+    </nav>
+
+    <div id="sidebarMenu" class="sidebar-menu">
+        <div class="sidebar-header" onclick="toggleSidebar()">✕ Close</div>
+        <div class="welcome-panel">
+            <h4 id="welcomeText">Welcome, Guest!</h4>
+            <p id="userEmailText">Login to track orders</p>
+        </div>
+        <div class="sidebar-links">
+            <span style="font-size: 11px; color: #94a3b8; font-weight: bold; letter-spacing: 1px;">ALL CATEGORIES</span>
+            <a href="men.html" class="sidebar-item">👕 Full Men's Wear</a>
+            <a href="women.html" class="sidebar-item">👗 Full Women's Wear</a>
+            <a href="kids.html" class="sidebar-item">🧸 Full Kids' Wear</a> <a href="electronics.html" class="sidebar-item">🔌 Full Electronics</a>
+            <a href="accessories_page.html" class="sidebar-item">👜 Full Accessories</a>
+            <a href="decor.html" class="sidebar-item">🏠 Full Home Decor</a>
+            <a href="footwear.html" class="sidebar-item">👟 Full Footwear Hub</a>
+        </div>
+        <div class="sidebar-footer">
+            <div id="customerAuthBox">
+                <button class="google-login-btn" onclick="customerGoogleLogin()">Continue with Google</button>
+            </div>
+            <button id="logoutBtn" class="logout-action-btn" onclick="handleLogout()">Log Out</button>
+            <div id="adminContainer" style="display: none;">
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+                <a id="adminLink" href="admin.html" class="admin-portal-btn" style="display: block;">🔒 Admin Panel Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleSidebar()"></div>
+
+    <main class="main-content-area">
+        <h2 style="color: #0a192f; margin-top: 10px;">Welcome to BuyWithFarhan</h2>
+        <p style="color: #64748b; font-size: 14px;">Where You See Your Choice</p>
+
+        <div id="men" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Men's Wear Collection</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/720/720/xif0q/t-shirt/j/a/c/-original-imahfzyyvqzagqsd.jpeg?q=90" alt="Product Image">
+                    <h3 class="product-title">Stylish T-Shirt</h3>
+                    <p class="product-desc">Men's Cotton Wear</p>
+                    <div class="product-price">₹341</div>
+                    <button onclick="openOrderForm('Stylish T-Shirt', '₹341')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim1.flixcart.com/image/720/720/xif0q/jean/a/r/u/30-hljn003571-highlander-original-imagvyq2fusp4vwv.jpeg?q=90" alt="Product Image">
+                    <h3 class="product-title">Casual Jean's Wear</h3>
+                    <p class="product-desc">Men's Slim Black Jeans</p>
+                    <div class="product-price">₹349</div>
+                    <button onclick="openOrderForm('Casual Jean\'s Wear', '₹349')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="men.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="women" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Women's Wear Collection</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/720/720/xif0q/kurta/r/v/g/xl-box-patdom-original-imagspbprwjcyqtj.jpeg?q=90" alt="Product Image">
+                    <h3 class="product-title">PATDOM Kurta</h3>
+                    <p class="product-desc">Women Kurta</p>
+                    <div class="product-price">₹325</div>
+                    <button onclick="openOrderForm('PATDOM Women Kurta', '₹325')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/720/720/xif0q/top/x/8/b/s-1-black-top-01-groveberry-original-imahk32krf5yarcu.jpeg?q=90" alt="Product Image">
+                    <h3 class="product-title">GROWEBERRY Top</h3>
+                    <p class="product-desc">Women Black Top</p>
+                    <div class="product-price">₹225</div>
+                    <button onclick="openOrderForm('GROWEBERRY Black Top', '₹225')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="women.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="kids" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Kids' Wear & Toys Collection</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/612/612/xif0q/kids-clothing-set/j/k/5/3-4-years-clothing-set-boy-pant-shirt-style-vimal-fashion-original-imahfmyfeyfy9zhq.jpeg?q=70" alt="Boy Clothing">
+                    <h3 class="product-title">Boys Party Suit Set</h3>
+                    <p class="product-desc">Premium Kids Wear</p>
+                    <div class="product-price">₹399</div>
+                    <button onclick="openOrderForm('Boys Party Suit Set', '₹399')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/612/612/xif0q/kids-apparel-combo/g/n/o/2-3-years-girls-frock-plasma-combo-be-fashionable-original-imahfrzhb8z8z9ha.jpeg?q=70" alt="Girl Clothing">
+                    <h3 class="product-title">Girls Frock Dress</h3>
+                    <p class="product-desc">Cute Summer Cotton Set</p>
+                    <div class="product-price">₹299</div>
+                    <button onclick="openOrderForm('Girls Frock Dress', '₹299')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/612/612/xif0q/toy-tricycle/u/s/b/smart-plug-play-baby-tricycle-with-cushioned-seat-storage-basket-original-imagsyfhgtyd3fht.jpeg?q=70" alt="Product Image">
+                    <h3 class="product-title">Smart Kids Tricycle</h3>
+                    <p class="product-desc">Plug & Play Baby Cycle</p>
+                    <div class="product-price">₹1,249</div>
+                    <button onclick="openOrderForm('Smart Kids Tricycle', '₹1,249')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/612/612/xif0q/kids-shoe/s/a/b/8-kids-sports-shoes-8-bata-blue-original-imahk9zfuzhgzhz8.jpeg?q=70" alt="Kids Footwear">
+                    <h3 class="product-title">Kids Breathable Sneakers</h3>
+                    <p class="product-desc">Lightweight Running Shoes</p>
+                    <div class="product-price">₹349</div>
+                    <button onclick="openOrderForm('Kids Breathable Sneakers', '₹349')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="kids.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="electronics" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Electronics</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/1280/1280/xif0q/headphone/p/r/z/b11-mivi-original-imagv6vdfv6p4g8f.jpeg" alt="Product Image">
+                    <h3 class="product-title">Wireless Earbuds</h3>
+                    <p class="product-desc">True Wireless Bluetooth</p>
+                    <div class="product-price">₹1,199</div>
+                    <button onclick="openOrderForm('Wireless Earbuds', '₹1,199')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/1280/1280/xif0q/smartwatch/g/w/d/-original-imagz6z6g7shg7gz.jpeg" alt="Product Image">
+                    <h3 class="product-title">Fitness Smartwatch</h3>
+                    <p class="product-desc">HD Display & Tracking</p>
+                    <div class="product-price">₹1,799</div>
+                    <button onclick="openOrderForm('Fitness Smartwatch', '₹1,799')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="electronics.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="accessories" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Premium Accessories</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9dko0X3aEhJT8BaMXmGLBRGj4Hp4BwnA2SQ&s" alt="Product Image">
+                    <h3 class="product-title">Americanviber</h3>
+                    <p class="product-desc">Premium Metallic Watch</p>
+                    <div class="product-price">₹457</div>
+                    <button onclick="openOrderForm('Americanviber Watch', '₹457')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="accessories.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="decor" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Home & Living Decor</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/612/612/xif0q/showpiece-figurine/o/g/f/7-6-milan-creation-handcrafted-smoke-backflow-cone-incense-original-imahf3hyyugayyy6.jpeg?q=70" alt="Product Image">
+                    <h3 class="product-title">Ganesha Incense Holder</h3>
+                    <p class="product-desc">Smoke Backflow Burner</p>
+                    <div class="product-price">₹249</div>
+                    <button onclick="openOrderForm('Ganesha Incense Holder', '₹249')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/612/612/kh0vonk0/lamp/y/v/r/star-master-original-imafx4yk7nyhgmsh.jpeg?q=70" alt="Product Image">
+                    <h3 class="product-title">LED Galaxy Projector Lamp</h3>
+                    <p class="product-desc">Night Light Star Master</p>
+                    <div class="product-price">₹399</div>
+                    <button onclick="openOrderForm('LED Galaxy Projector Lamp', '₹399')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="decor.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="footwear" class="section-block">
+            <h3 style="margin-bottom: 15px; text-align: center; color: #0a192f;">Trendy Footwear Hub</h3>
+            <div class="product-slider">
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/720/720/xif0q/shoe/q/q/e/9-coscocgryblk-9-asian-grey-original-imahkf9dznuhzhz7.jpeg?q=90" alt="Product Image">
+                    <h3 class="product-title">Casual Sports Shoes</h3>
+                    <p class="product-desc">Men's Breathable Running</p>
+                    <div class="product-price">₹694</div>
+                    <button onclick="openOrderForm('Casual Sports Shoes', '₹694')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://rukminim2.flixcart.com/image/720/720/xif0q/shopsy-slipper-flip-flop/p/g/v/4-article-11-flipflop-lazyflip-black-original-imahfkz7eymybgq2.jpeg?q=90" alt="Product Image">
+                    <h3 class="product-title">Lazyflip Slippers</h3>
+                    <p class="product-desc">Women's Comfy Slides</p>
+                    <div class="product-price">₹160</div>
+                    <button onclick="openOrderForm('Lazyflip Slippers', '₹160')" class="buy-now-btn">Buy Now</button>
+                </div>
+                <div class="see-all-flex-container">
+                    <a href="footwear.html" class="see-all-circle-new">➔</a>
+                    <span style="font-size: 11px; color: #0a192f; font-weight: bold; margin-top: 8px;">SEE ALL</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="orderFormPopup" class="order-popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closeOrderForm()">&times;</span>
+            <h3 style="margin-top:0; color: #0a192f; border-bottom: 2px solid #00b4d8; padding-bottom: 8px;">Checkout Form</h3>
+            <input type="hidden" id="selectedProductName">
+            <input type="hidden" id="selectedProductPrice">
+            <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; font-weight: bold; color: #0a192f; border: 1px solid #cbd5e1;">
+                Product: <span id="displayProdName" style="color:#00b4d8;"></span><br>Price: <span id="displayProdPrice" style="color:#00b4d8;"></span>
+            </div>
+            <div class="form-group"><label>Your Full Name:</label><input type="text" id="custName" placeholder="Enter your name" required></div>
+            <div class="form-group"><label>Mobile Number:</label><input type="tel" id="custPhone" placeholder="Enter 10-digit number" required></div>
+            <div class="form-group"><label>Area Pincode:</label><input type="number" id="custPincode" placeholder="Enter 6-digit pincode" required></div>
+            <div class="form-group"><label>Full Address:</label><textarea id="custAddress" placeholder="House No, Road, City, State" required></textarea></div>
+            <p style="font-size: 12px; color: #64748b; font-weight: bold; text-align: left;">* Method: Cash on Delivery (COD)</p>
+            <button class="submit-order-btn" onclick="sendOrderToWhatsApp()">Confirm Order on WhatsApp</button>
+        </div>
+    </div>
+
+    <footer class="premium-store-footer">
+        <div class="footer-content">
+            <div class="footer-thankyou">
+                <h3>Thank You For Shopping!</h3>
+                <p>BuyWithFarhan ek premium dropshipping hub hai jahan aapko best high-quality lifestyle trends aur gadgets milte hain sabse saste daam me. Connect with Farhan directly below!</p>
+            </div>
+            
+            <div class="footer-social-icons">
+                <a href="https://instagram.com/your_username" target="_blank" class="social-icon-link" title="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <radialGradient id="igGrad" cx="30%" cy="107%" r="130%">
+                            <stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="100%" stop-color="#285AEB"/>
+                        </radialGradient>
+                        <rect x="2" y="2" width="20" height="20" rx="5" fill="url(#igGrad)"/>
+                        <path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4z" fill="white"/>
+                        <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+                    </svg>
+                </a>
+
+                <a href="https://youtube.com/@your_channel" target="_blank" class="social-icon-link" title="YouTube">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2c-.3-1.1-1.1-2-2.2-2.3C19.3 3.5 12 3.5 12 3.5s-7.3 0-9.3.4c-1.1.3-1.9 1.2-2.2 2.3C0 8.2 0 12 0 12s0 3.8.4 5.8c.3 1.1 1.1 2 2.2 2.3 2 .4 9.3.4 9.3.4s7.3 0 9.3-.4c1.1-.3 1.9-1.2 2.2-2.3.4-2 .4-5.8.4-5.8s0-3.8-.4-5.8z" fill="#FF0000"/>
+                        <path d="M9.6 15.6l6.2-3.6-6.2-3.6v7.2z" fill="white"/>
+                    </svg>
+                </a>
+
+                <a href="https://facebook.com/your_profile" target="_blank" class="social-icon-link" title="Facebook">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07c0 6.03 4.43 11.02 10.22 11.94v-8.45H7.18v-3.5h3.04V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.68.24 2.68.24v2.96h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.33l-.53 3.5h-2.8v8.45C19.57 23.1 24 18.1 24 12.07z" fill="#1877F2"/>
+                    </svg>
+                </a>
+
+                <a href="https://wa.me/918849668317" target="_blank" class="social-icon-link" title="WhatsApp Business">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12.01 0C5.38 0 0 5.39 0 12.02c0 2.12.55 4.11 1.52 5.86L.05 23.95l6.25-1.64c1.7.93 3.65 1.47 5.71 1.47 6.63 0 12.02-5.39 12.02-12.02C24.03 5.39 18.64 0 12.01 0zm6.19 17c-.26.73-1.5 1.34-2.07 1.41-.5.06-1.14.09-3.2-.76-2.63-1.09-4.31-3.77-4.44-3.95-.13-.18-.99-1.32-.99-2.51 0-1.2.62-1.79.84-2.03.22-.24.49-.3.65-.3.16 0 .33 0 .47.01.15 0 .35-.06.55.42.2.49.69 1.68.75 1.8.06.12.1.27.02.43-.08.16-.12.26-.24.4-.12.14-.26.31-.37.42-.12.12-.25.25-.11.49.14.24.63 1.04 1.35 1.68.93.82 1.71 1.08 1.95 1.2.24.12.38.1.52-.06.14-.16.61-.71.77-.96.16-.24.33-.2.55-.12.22.08 1.41.67 1.65.79.24.12.4.18.46.28.06.1.06.58-.2 1.31z" fill="#25D366"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="footer-copyright">
+                &copy; 2026 BuyWithFarhan. All Rights Reserved. Crafted with ❤️ for Premium E-Commerce.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB70CUmZ0pBMJxuESbTIPmUEjLyEfXkLKQ",
+            authDomain: "bywithfarhan.firebaseapp.com",
+            projectId: "bywithfarhan",
+            storageBucket: "bywithfarhan.firebasestorage.app",
+            messagingSenderId: "73400600521",
+            appId: "1:73400600521:web:cec78a693ec128d3270a18"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            const overlay = document.getElementById('menuOverlay');
+            if (sidebar.style.left === '0px') {
+                sidebar.style.left = '-300px';
+                overlay.style.display = 'none';
+            } else {
+                sidebar.style.left = '0px';
+                overlay.style.display = 'block';
+            }
+        }
+
+        /* LENS SYSTEM */
+        function handleCameraSearch(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const lensOverlay = document.getElementById('lensOverlay');
+            lensOverlay.style.display = "flex";
+
+            setTimeout(() => {
+                lensOverlay.style.display = "none";
+                const fileNameLower = file.name.toLowerCase();
+                let discoveredKeyword = "";
+
+                if(fileNameLower.includes("shirt") || fileNameLower.includes("top") || fileNameLower.includes("kurta") || fileNameLower.includes("frock")) {
+                    discoveredKeyword = "t-shirt";
+                } else if (fileNameLower.includes("shoe") || fileNameLower.includes("slipper") || fileNameLower.includes("sneaker")) {
+                    discoveredKeyword = "shoes";
+                } else if (fileNameLower.includes("lamp") || fileNameLower.includes("decor") || fileNameLower.includes("ganesha")) {
+                    discoveredKeyword = "lamp";
+                } else {
+                    discoveredKeyword = "watch";
+                }
+
+                const input = document.getElementById('storeSearchInput');
+                input.value = discoveredKeyword;
+                filterProductsByName(discoveredKeyword);
+            }, 2500);
+        }
+
+        /* TEXT SEARCH SYSTEM */
+        function handleSearchSuggestions() {
+            const input = document.getElementById('storeSearchInput');
+            const query = input.value.toLowerCase().trim();
+            const suggestionBox = document.getElementById('suggestionBox');
+            const cards = document.querySelectorAll('.product-card');
+            
+            suggestionBox.innerHTML = "";
+
+            if (query === "") {
+                suggestionBox.style.display = "none";
+                cards.forEach(card => card.classList.remove('hidden'));
+                return;
+            }
+
+            let matches = [];
+            cards.forEach(card => {
+                const title = card.querySelector('.product-title').innerText;
+                const titleLower = title.toLowerCase();
+                if (titleLower.includes(query)) {
+                    matches.push(title);
+                }
+            });
+
+            if (matches.length > 0) {
+                suggestionBox.style.display = "block";
+                const uniqueMatches = [...new Set(matches)].slice(0, 6);
+                
+                uniqueMatches.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = "suggestion-item";
+                    div.innerHTML = `🔍 <span>${item}</span>`;
+                    div.onclick = function() {
+                        input.value = item;
+                        suggestionBox.style.display = "none";
+                        filterProductsByName(item.toLowerCase());
+                    };
+                    suggestionBox.appendChild(div);
+                });
+            } else {
+                suggestionBox.style.display = "block";
+                suggestionBox.innerHTML = `<div class="suggestion-item" style="color: #888; cursor: default; padding-left:18px;">No items found</div>`;
+            }
+        }
+
+        function triggerSearchButton() {
+            const input = document.getElementById('storeSearchInput');
+            const query = input.value.toLowerCase().trim();
+            if(query !== "") {
+                filterProductsByName(query);
+                document.getElementById('suggestionBox').style.display = "none";
+            }
+        }
+
+        function filterProductsByName(nameKeyword) {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.product-title').innerText.toLowerCase();
+                if (title.includes(nameKeyword)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.amazon-search-wrapper')) {
+                document.getElementById('suggestionBox').style.display = "none";
+            }
+        });
+
+        function customerGoogleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(() => {
+                alert("Sign-In Successful!");
+                toggleSidebar();
+            }).catch((err) => {
+                alert("Authorization Denied: " + err.message);
+            });
+        }
+
+        function handleLogout() {
+            auth.signOut().then(() => {
+                alert("Session Closed Successfully!");
+                toggleSidebar();
+            });
+        }
+
+        auth.onAuthStateChanged(user => {
+            const welcomeText = document.getElementById('welcomeText');
+            const emailText = document.getElementById('userEmailText');
+            const customerBox = document.getElementById('customerAuthBox');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminContainer = document.getElementById('adminContainer');
+
+            const CORE_ADMIN_ID = "kf7161892@gmail.com";
+
+            if (user) {
+                emailText.style.display = "block";
+                emailText.innerText = user.email;
+                customerBox.style.display = "none";
+                logoutBtn.style.display = "block";
+
+                if (user.email.toLowerCase() === CORE_ADMIN_ID.toLowerCase()) {
+                    welcomeText.innerText = "System Admin: Farhan 👑";
+                    adminContainer.style.display = "block";
+                } else {
+                    welcomeText.innerText = user.displayName ? "Hello, " + user.displayName : "Hello, Client!";
+                    adminContainer.style.display = "none";
+                }
+            } else {
+                welcomeText.innerText = "Welcome, Guest!";
+                emailText.style.display = "none";
+                customerBox.style.display = "block";
+                logoutBtn.style.display = "none";
+                adminContainer.style.display = "none";
+            }
+        });
+
+        function openOrderForm(pName, pPrice) {
+            document.getElementById('selectedProductName').value = pName; 
+            document.getElementById('selectedProductPrice').value = pPrice;
+            document.getElementById('displayProdName').innerText = pName; 
+            document.getElementById('displayProdPrice').innerText = pPrice;
+            document.getElementById('orderFormPopup').style.display = 'flex';
+        }
+        function closeOrderForm() { 
+            document.getElementById('orderFormPopup').style.display = 'none'; 
+        }
+        function sendOrderToWhatsApp() {
+            var name = document.getElementById('custName').value.trim(); 
+            var phone = document.getElementById('custPhone').value.trim();
+            var pincode = document.getElementById('custPincode').value.trim(); 
+            var address = document.getElementById('custAddress').value.trim();
+            
+            if(!name || !phone || !pincode || !address) { 
+                alert("Please fill all details!"); 
+                return; 
+            }
+            var msg = "*📦 NEW ORDER*\n\n*Product:* " + document.getElementById('selectedProductName').value + "\n*Price:* " + document.getElementById('selectedProductPrice').value + "\n\n*Customer Details:*\n• Name: " + name + "\n• Mobile: " + phone + "\n• Pincode: " + pincode + "\n• Address: " + address + "\n\n*COD Method*";
+            window.open("https://wa.me/918849668317?text=" + encodeURIComponent(msg), '_blank');
+            closeOrderForm();
+        }
+    </script>
+</body>
+</html>
